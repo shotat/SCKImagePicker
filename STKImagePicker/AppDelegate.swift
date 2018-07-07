@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  STKImagePicker
-//
-//  Created by Shota Terashita on 2018/07/07.
-//  Copyright © 2018年 Shotat. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
@@ -15,7 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = ViewController()
+        self.window?.rootViewController = STKViewController()
         self.window?.makeKeyAndVisible()
 
         return true
