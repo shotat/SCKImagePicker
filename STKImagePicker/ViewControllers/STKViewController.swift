@@ -1,6 +1,11 @@
+import Photos
 import UIKit
 
+private let stkAlbumViewCellId = "SKTAlbumViewCellId"
+
 class STKViewController: UIViewController {
+    var images: PHFetchResult<PHAsset>!
+    var imageManager: PHCachingImageManager?
     lazy var imageCropView = STKImageCropView()
 
     lazy var collectionView: UICollectionView = {
@@ -9,14 +14,15 @@ class STKViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         // collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(STKAlbumViewCell.self, forCellWithReuseIdentifier: stkAlbumViewCellId)
         return collectionView
     }()
 
     lazy var collectionViewLayout: UICollectionViewLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         let margin: CGFloat = 0
-        flowLayout.itemSize = CGSize(width: 100.0, height: 100.0)
+        let cellWidth = view.frame.width / 2
+        flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
         return flowLayout
@@ -37,6 +43,42 @@ class STKViewController: UIViewController {
             $0.left.right.equalToSuperview()
             $0.height.equalTo(imageCropView.snp.width)
         }
+
+        checkPhotoAuth()
+        // Sorting condition
+        let options = PHFetchOptions()
+        options.sortDescriptors = [
+            NSSortDescriptor(key: "creationDate", ascending: false),
+        ]
+        images = PHAsset.fetchAssets(with: .image, options: options)
+        if images.count > 0 {
+            // changeImage(images[0])
+            collectionView.reloadData()
+            collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition())
+        }
+        PHPhotoLibrary.shared().register(self)
+    }
+
+    // Check the status of authorization for PHPhotoLibrary
+    func checkPhotoAuth() {
+        PHPhotoLibrary.requestAuthorization { (status) -> Void in
+            switch status {
+            case .authorized:
+                self.imageManager = PHCachingImageManager()
+            // if let images = self.images, images.count > 0 {
+            // self.changeImage(images[0])
+            // }
+            // DispatchQueue.main.async {
+            // self.delegate?.albumViewCameraRollAuthorized()
+            // }
+            // case .restricted, .denied:
+            // DispatchQueue.main.async(execute: { () -> Void in
+            // self.delegate?.albumViewCameraRollUnauthorized()
+            // })
+            default:
+                break
+            }
+        }
     }
 }
 
@@ -46,14 +88,29 @@ extension STKViewController: UICollectionViewDelegate {
     }
 
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return 20
+        return images == nil ? 0 : images.count
     }
 }
 
 extension STKViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .cyan
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: stkAlbumViewCellId, for: indexPath) as! STKAlbumViewCell
+        let cellWidth = view.frame.width / 3
+        let cellSize = CGSize(width: cellWidth, height: cellWidth)
+        let currentTag = cell.tag + 1
+        cell.tag = currentTag
+
+        let asset = images[(indexPath as NSIndexPath).item]
+        imageManager?.requestImage(for: asset,
+                                   targetSize: cellSize,
+                                   contentMode: .aspectFill,
+                                   options: nil) {
+            result, _ in
+
+            if cell.tag == currentTag {
+                cell.image = result
+            }
+        }
         return cell
     }
 }
@@ -84,5 +141,11 @@ extension STKViewController: UIScrollViewDelegate {
             }
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension STKViewController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_: PHChange) {
+        // TODO:
     }
 }

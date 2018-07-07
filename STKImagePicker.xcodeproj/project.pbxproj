@@ -11,6 +11,8 @@
 		656B5EDE20F10C7900B84004 /* STKImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EDD20F10C7900B84004 /* STKImageCropView.swift */; };
 		656B5EE020F10D2E00B84004 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; };
 		656B5EE120F10D2E00B84004 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		656B5EEC20F1309300B84004 /* STKAlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EEB20F1309300B84004 /* STKAlbumView.swift */; };
+		656B5EEE20F130B400B84004 /* STKAlbumViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EED20F130B400B84004 /* STKAlbumViewCell.swift */; };
 		65D8521120F107E100391BCA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8521020F107E100391BCA /* AppDelegate.swift */; };
 		65D8521320F107E100391BCA /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8521220F107E100391BCA /* SampleViewController.swift */; };
 		65D8521820F107E200391BCA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D8521720F107E200391BCA /* Assets.xcassets */; };
@@ -35,6 +37,8 @@
 		656B5ED920F10B4D00B84004 /* STKViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKViewController.swift; sourceTree = "<group>"; };
 		656B5EDD20F10C7900B84004 /* STKImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKImageCropView.swift; sourceTree = "<group>"; };
 		656B5EDF20F10D2E00B84004 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
+		656B5EEB20F1309300B84004 /* STKAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKAlbumView.swift; sourceTree = "<group>"; };
+		656B5EED20F130B400B84004 /* STKAlbumViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKAlbumViewCell.swift; sourceTree = "<group>"; };
 		65D8520D20F107E100391BCA /* STKImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STKImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D8521020F107E100391BCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D8521220F107E100391BCA /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
@@ -67,6 +71,8 @@
 			isa = PBXGroup;
 			children = (
 				656B5EDD20F10C7900B84004 /* STKImageCropView.swift */,
+				656B5EEB20F1309300B84004 /* STKAlbumView.swift */,
+				656B5EED20F130B400B84004 /* STKAlbumViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -175,8 +181,10 @@
 			files = (
 				656B5EDE20F10C7900B84004 /* STKImageCropView.swift in Sources */,
 				656B5EDA20F10B4D00B84004 /* STKViewController.swift in Sources */,
+				656B5EEC20F1309300B84004 /* STKAlbumView.swift in Sources */,
 				65D8521320F107E100391BCA /* SampleViewController.swift in Sources */,
 				65D8521120F107E100391BCA /* AppDelegate.swift in Sources */,
+				656B5EEE20F130B400B84004 /* STKAlbumViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
