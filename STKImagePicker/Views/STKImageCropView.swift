@@ -1,5 +1,5 @@
-import UIKit
 import SnapKit
+import UIKit
 
 class STKImageCropView: UIView {
     let imageView: UIImageView = {
@@ -7,6 +7,7 @@ class STKImageCropView: UIView {
         imageView.backgroundColor = .green
         return imageView
     }()
+
     init() {
         super.init(frame: .zero)
         addSubview(imageView)
@@ -14,8 +15,8 @@ class STKImageCropView: UIView {
             $0.edges.equalToSuperview()
         }
     }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+    required init?(coder _: NSCoder) {
         fatalError()
     }
 }
