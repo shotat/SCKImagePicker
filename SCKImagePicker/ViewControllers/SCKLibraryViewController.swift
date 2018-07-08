@@ -11,7 +11,8 @@ enum CurtainState: Int {
 }
 
 class SCKLibraryViewController: UIViewController {
-    var presenter: SCKPresenter!
+    var presenter: SCKLibraryPresenter!
+    let albumsManager = SCKAlbumsManager()
 
     let topInset = CGFloat(30)
     lazy var imageCropViewHeight: CGFloat = {
@@ -62,7 +63,7 @@ class SCKLibraryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = SCKPresenter()
+        presenter = SCKLibraryPresenter()
         let titleView = SCKLibraryTitleView(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
         titleView.setTitle(title: "SCKImagePicker")
         titleView.button.addTarget(self, action: #selector(navBarTapped), for: .touchUpInside)
@@ -115,16 +116,15 @@ class SCKLibraryViewController: UIViewController {
     }
 
     @objc func navBarTapped() {
-        // let vc = SCKAlbumsViewController(albumsManager: albumsManager)
-        let vc = SampleViewController()
+        let vc = SCKAlbumsViewController(albumsManager: albumsManager)
         let navVC = UINavigationController(rootViewController: vc)
-        // vc.didSelectAlbum = { [weak self] album in
-        //     self?.libraryVC?.setAlbum(album)
-        //     self?.libraryVC?.title = album.title
-        //     self?.libraryVC?.refreshMediaRequest()
-        //     self?.setTitleViewWithTitle(aTitle: album.title)
-        //     self?.dismiss(animated: true, completion: nil)
-        // }
+        vc.didSelectAlbum = { [weak self] _ in
+            // self?.libraryVC?.setAlbum(album)
+            // self?.libraryVC?.title = album.title
+            // self?.libraryVC?.refreshMediaRequest()
+            // self?.setTitleViewWithTitle(aTitle: album.title)
+            self?.dismiss(animated: true, completion: nil)
+        }
         present(navVC, animated: true, completion: nil)
     }
 }

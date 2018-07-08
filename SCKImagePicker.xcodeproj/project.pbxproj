@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */; };
+		6544B44F20F1FF4200FC7243 /* SCKLibraryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B44E20F1FF4200FC7243 /* SCKLibraryPresenter.swift */; };
 		6544B45220F217DC00FC7243 /* SCKAlbumsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45120F217DC00FC7243 /* SCKAlbumsManager.swift */; };
 		6544B45520F2199000FC7243 /* SCKAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45420F2199000FC7243 /* SCKAlbumsViewController.swift */; };
 		6544B45720F219AD00FC7243 /* SCKAlbumsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45620F219AD00FC7243 /* SCKAlbumsCell.swift */; };
 		6544B45A20F219E400FC7243 /* SCKAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45920F219E400FC7243 /* SCKAlbum.swift */; };
 		6544B45C20F21ED000FC7243 /* SCKImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45B20F21ED000FC7243 /* SCKImagePickerViewController.swift */; };
 		6544B45E20F2252900FC7243 /* SCKLibraryTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45D20F2252900FC7243 /* SCKLibraryTitleView.swift */; };
+		6544B46020F23CE100FC7243 /* SCKAlbumTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45F20F23CE100FC7243 /* SCKAlbumTableView.swift */; };
+		6544B46220F23D6B00FC7243 /* SCKAlbumsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B46120F23D6B00FC7243 /* SCKAlbumsPresenter.swift */; };
 		656B5EDA20F10B4D00B84004 /* SCKLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5ED920F10B4D00B84004 /* SCKLibraryViewController.swift */; };
 		656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */; };
 		656B5EE020F10D2E00B84004 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; };
@@ -41,13 +43,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKPresenter.swift; sourceTree = "<group>"; };
+		6544B44E20F1FF4200FC7243 /* SCKLibraryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKLibraryPresenter.swift; sourceTree = "<group>"; };
 		6544B45120F217DC00FC7243 /* SCKAlbumsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumsManager.swift; sourceTree = "<group>"; };
 		6544B45420F2199000FC7243 /* SCKAlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumsViewController.swift; sourceTree = "<group>"; };
 		6544B45620F219AD00FC7243 /* SCKAlbumsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumsCell.swift; sourceTree = "<group>"; };
 		6544B45920F219E400FC7243 /* SCKAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbum.swift; sourceTree = "<group>"; };
 		6544B45B20F21ED000FC7243 /* SCKImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKImagePickerViewController.swift; sourceTree = "<group>"; };
 		6544B45D20F2252900FC7243 /* SCKLibraryTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKLibraryTitleView.swift; sourceTree = "<group>"; };
+		6544B45F20F23CE100FC7243 /* SCKAlbumTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumTableView.swift; sourceTree = "<group>"; };
+		6544B46120F23D6B00FC7243 /* SCKAlbumsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumsPresenter.swift; sourceTree = "<group>"; };
 		656B5ED920F10B4D00B84004 /* SCKLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKLibraryViewController.swift; sourceTree = "<group>"; };
 		656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKImageCropView.swift; sourceTree = "<group>"; };
 		656B5EDF20F10D2E00B84004 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
@@ -76,8 +80,9 @@
 		6544B44D20F1FF2600FC7243 /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
-				6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */,
+				6544B44E20F1FF4200FC7243 /* SCKLibraryPresenter.swift */,
 				6544B45120F217DC00FC7243 /* SCKAlbumsManager.swift */,
+				6544B46120F23D6B00FC7243 /* SCKAlbumsPresenter.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -86,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				6544B45620F219AD00FC7243 /* SCKAlbumsCell.swift */,
+				6544B45F20F23CE100FC7243 /* SCKAlbumTableView.swift */,
 			);
 			path = SCKAlbums;
 			sourceTree = "<group>";
@@ -227,13 +233,15 @@
 				6544B45A20F219E400FC7243 /* SCKAlbum.swift in Sources */,
 				656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */,
 				6544B45220F217DC00FC7243 /* SCKAlbumsManager.swift in Sources */,
-				6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */,
+				6544B44F20F1FF4200FC7243 /* SCKLibraryPresenter.swift in Sources */,
 				656B5EDA20F10B4D00B84004 /* SCKLibraryViewController.swift in Sources */,
+				6544B46220F23D6B00FC7243 /* SCKAlbumsPresenter.swift in Sources */,
 				656B5EEC20F1309300B84004 /* SCKLibrarySelectionsView.swift in Sources */,
 				6544B45E20F2252900FC7243 /* SCKLibraryTitleView.swift in Sources */,
 				6544B45520F2199000FC7243 /* SCKAlbumsViewController.swift in Sources */,
 				65D8521320F107E100391BCA /* SampleViewController.swift in Sources */,
 				6544B45720F219AD00FC7243 /* SCKAlbumsCell.swift in Sources */,
+				6544B46020F23CE100FC7243 /* SCKAlbumTableView.swift in Sources */,
 				65D8521120F107E100391BCA /* AppDelegate.swift in Sources */,
 				6544B45C20F21ED000FC7243 /* SCKImagePickerViewController.swift in Sources */,
 				656B5EEE20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift in Sources */,

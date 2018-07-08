@@ -1,6 +1,6 @@
 import Photos
 
-final class SCKPresenter: NSObject {
+final class SCKLibraryPresenter: NSObject {
     var images: PHFetchResult<PHAsset>!
     var imageManager: PHCachingImageManager?
 
@@ -65,7 +65,7 @@ final class SCKPresenter: NSObject {
     }
 }
 
-extension SCKPresenter: PHPhotoLibraryChangeObserver {
+extension SCKLibraryPresenter: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_: PHChange) {
         /*
          DispatchQueue.main.async {

@@ -1,7 +1,7 @@
 import Foundation
 import Photos
 
-class SCKAlbumsManager {
+final class SCKAlbumsManager {
     private static let instance = SCKAlbumsManager()
     class var sharedDefault: SCKAlbumsManager {
         return instance

@@ -3,6 +3,7 @@ import UIKit
 class SCKAlbumsCell: UITableViewCell {
     let thumbnail: UIImageView = {
         let thumbnail = UIImageView()
+        thumbnail.backgroundColor = .gray
         thumbnail.contentMode = .scaleAspectFill
         thumbnail.clipsToBounds = true
         return thumbnail
@@ -28,7 +29,7 @@ class SCKAlbumsCell: UITableViewCell {
         thumbnail.snp.makeConstraints {
             $0.left.top.bottom.equalToSuperview().inset(6)
             $0.height.equalTo(70)
-            $0.width.equalTo(thumbnail.snp.width)
+            $0.width.equalTo(thumbnail.snp.height)
         }
 
         title.snp.makeConstraints {
@@ -37,7 +38,7 @@ class SCKAlbumsCell: UITableViewCell {
         }
 
         numberOfItems.snp.makeConstraints {
-            $0.top.equalTo(title.snp.bottom).inset(6)
+            $0.top.equalTo(title.snp.bottom).offset(10)
             $0.left.equalTo(thumbnail.snp.right).offset(6)
         }
     }
@@ -45,7 +46,7 @@ class SCKAlbumsCell: UITableViewCell {
     func configure(album: SCKAlbum) {
         thumbnail.image = album.thumbnail
         title.text = album.title
-        numberOfItems.text = String(album.numberOfItems)
+        numberOfItems.text = "\(album.numberOfItems)"
     }
 
     required init?(coder _: NSCoder) {
