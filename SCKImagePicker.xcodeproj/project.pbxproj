@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */; };
 		656B5EDA20F10B4D00B84004 /* SCKViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5ED920F10B4D00B84004 /* SCKViewController.swift */; };
 		656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */; };
 		656B5EE020F10D2E00B84004 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; };
@@ -34,6 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKPresenter.swift; sourceTree = "<group>"; };
 		656B5ED920F10B4D00B84004 /* SCKViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKViewController.swift; sourceTree = "<group>"; };
 		656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKImageCropView.swift; sourceTree = "<group>"; };
 		656B5EDF20F10D2E00B84004 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
@@ -59,6 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6544B44D20F1FF2600FC7243 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */,
+			);
+			path = Presenters;
+			sourceTree = "<group>";
+		};
 		656B5EDB20F10B5200B84004 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +107,7 @@
 		65D8520F20F107E100391BCA /* SCKImagePicker */ = {
 			isa = PBXGroup;
 			children = (
+				6544B44D20F1FF2600FC7243 /* Presenters */,
 				656B5EDB20F10B5200B84004 /* ViewControllers */,
 				656B5EDC20F10B5E00B84004 /* Views */,
 				65D8521220F107E100391BCA /* SampleViewController.swift */,
@@ -180,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */,
+				6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */,
 				656B5EDA20F10B4D00B84004 /* SCKViewController.swift in Sources */,
 				656B5EEC20F1309300B84004 /* SCKAlbumView.swift in Sources */,
 				65D8521320F107E100391BCA /* SampleViewController.swift in Sources */,
@@ -321,11 +333,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7HX465E32H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = SCKImagePicker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -342,11 +356,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7HX465E32H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = SCKImagePicker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

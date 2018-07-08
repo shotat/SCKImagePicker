@@ -1,7 +1,13 @@
 import UIKit
 
 class SCKAlbumViewCell: UICollectionViewCell {
-    let imageView: UIImageView = UIImageView()
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+
     var image: UIImage? {
         didSet {
             self.imageView.image = image

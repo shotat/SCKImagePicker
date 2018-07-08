@@ -1,4 +1,3 @@
-import Photos
 import UIKit
 
 private let sckAlbumViewCellId = "SCKAlbumViewCellId"
@@ -12,6 +11,8 @@ enum CurtainState: Int {
 }
 
 class SCKViewController: UIViewController {
+    var presenter: SCKPresenter!
+
     let topInset = CGFloat(30)
     lazy var imageCropViewHeight: CGFloat = {
         self.view.frame.width
@@ -20,9 +21,6 @@ class SCKViewController: UIViewController {
     lazy var curtainClosedBottom: CGFloat = {
         self.imageCropViewHeight + self.imageCropView.frame.origin.y
     }()
-
-    var images: PHFetchResult<PHAsset>!
-    var imageManager: PHCachingImageManager?
 
     var curtainState: CurtainState = .closed {
         didSet {
@@ -57,9 +55,9 @@ class SCKViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = UIColor(red: 0xFA, green: 0xFA, blue: 0xFA, alpha: 1.0)
+        collectionView.alwaysBounceVertical = true
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.alwaysBounceVertical = true
         collectionView.register(SCKAlbumViewCell.self, forCellWithReuseIdentifier: sckAlbumViewCellId)
         return collectionView
     }()
@@ -76,6 +74,7 @@ class SCKViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter = SCKPresenter()
         navigationItem.title = "SCKImagePicker"
         view.backgroundColor = .white
         view.addSubview(collectionView)
@@ -92,104 +91,58 @@ class SCKViewController: UIViewController {
             $0.left.right.bottom.equalToSuperview()
         }
 
-        checkPhotoAuth()
-        // Sorting condition
-        let options = PHFetchOptions()
-        options.sortDescriptors = [
-            NSSortDescriptor(key: "creationDate", ascending: false),
-        ]
-        images = PHAsset.fetchAssets(with: .image, options: options)
-        if images.count > 0 {
-            // changeImage(images[0])
+        presenter.checkPhotoAuth()
+        presenter.reload()
+        if presenter.images.count > 0 {
+            changeCropViewImage(IndexPath(item: 0, section: 0))
             collectionView.reloadData()
             collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition())
         }
-
-        if let images = self.images, images.count > 0 {
-            print(images)
-            setCropViewImage(images[0])
-        }
-
-        PHPhotoLibrary.shared().register(self)
     }
 
-    // Check the status of authorization for PHPhotoLibrary
-    func checkPhotoAuth() {
-        PHPhotoLibrary.requestAuthorization { (status) -> Void in
-            switch status {
-            case .authorized:
-                self.imageManager = PHCachingImageManager()
-                if let images = self.images, images.count > 0 {
-                    print(images)
-                    self.setCropViewImage(images[0])
-                }
-            // DispatchQueue.main.async {
-            // self.delegate?.albumViewCameraRollAuthorized()
-            // }
-            // case .restricted, .denied:
-            // DispatchQueue.main.async(execute: { () -> Void in
-            // self.delegate?.albumViewCameraRollUnauthorized()
-            // })
-            default:
-                break
-            }
-        }
-    }
-
-    private func setCropViewImage(_ asset: PHAsset) {
+    private func changeCropViewImage(_ indexPath: IndexPath) {
         imageCropView.image = nil
-        // self.phAsset = asset
-        DispatchQueue.global().async {
-            let options = PHImageRequestOptions()
-            options.isNetworkAccessAllowed = true
-            self.imageManager?.requestImage(
-                for: asset,
-                targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
-                contentMode: .aspectFill,
-                options: options) { result, _ in
-                DispatchQueue.main.async {
-                    // self.imageCropView.imageSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
-                    self.imageCropView.image = result
-
-                    // if let result = result,
-                    // !self.selectedAssets.contains(asset) {
-
-                    // self.selectedAssets.append(asset)
-                    // self.selectedImages.append(result)
-                    // }
-                }
+        presenter.imageForCropView(indexPath: indexPath) { image in
+            DispatchQueue.main.async {
+                self.imageCropView.image = image
             }
         }
+        // if let result = result,
+        // !self.selectedAssets.contains(asset) {
+
+        // self.selectedAssets.append(asset)
+        // self.selectedImages.append(result)
+        // }
     }
 }
 
 extension SCKViewController: UICollectionViewDelegate {
-    func numberOfSections(in _: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return images == nil ? 0 : images.count
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        changeCropViewImage(indexPath)
     }
 }
 
 extension SCKViewController: UICollectionViewDataSource {
+    func numberOfSections(in _: UICollectionView) -> Int {
+        return presenter.numberOfSections()
+    }
+
+    func collectionView(_: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return presenter.numberOfItemsInSection(section)
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sckAlbumViewCellId, for: indexPath) as! SCKAlbumViewCell
         let cellWidth = view.frame.width / 3
         let cellSize = CGSize(width: cellWidth, height: cellWidth)
         let currentTag = cell.tag + 1
         cell.tag = currentTag
-
-        let asset = images[(indexPath as NSIndexPath).item]
-        imageManager?.requestImage(for: asset,
-                                   targetSize: cellSize,
-                                   contentMode: .aspectFill,
-                                   options: nil) { result, _ in
+        presenter.imageForAlbumView(indexPath: indexPath) { image in
             if cell.tag == currentTag {
-                cell.image = result
+                cell.image = image
             }
         }
+
         return cell
     }
 }
@@ -252,11 +205,5 @@ extension SCKViewController: UIScrollViewDelegate {
         default:
             break
         }
-    }
-}
-
-extension SCKViewController: PHPhotoLibraryChangeObserver {
-    func photoLibraryDidChange(_: PHChange) {
-        // TODO:
     }
 }
