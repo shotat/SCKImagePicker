@@ -65,7 +65,7 @@ class SCKViewController: UIViewController {
     lazy var collectionViewLayout: UICollectionViewLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         let margin: CGFloat = 0
-        let cellWidth = view.frame.width / 3
+        let cellWidth = view.frame.width / 4
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
@@ -119,6 +119,7 @@ class SCKViewController: UIViewController {
 extension SCKViewController: UICollectionViewDelegate {
     func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         changeCropViewImage(indexPath)
+        curtainState = .closed
     }
 }
 
@@ -133,8 +134,8 @@ extension SCKViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sckAlbumViewCellId, for: indexPath) as! SCKAlbumViewCell
-        let cellWidth = view.frame.width / 3
-        let cellSize = CGSize(width: cellWidth, height: cellWidth)
+        // let cellWidth = view.frame.width / 3
+        // let cellSize = CGSize(width: cellWidth, height: cellWidth)
         let currentTag = cell.tag + 1
         cell.tag = currentTag
         presenter.imageForAlbumView(indexPath: indexPath) { image in

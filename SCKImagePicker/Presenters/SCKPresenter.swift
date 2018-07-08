@@ -20,14 +20,15 @@ final class SCKPresenter: NSObject {
     }
 
     func imageForCropView(indexPath: IndexPath, completion: @escaping ((UIImage?) -> Void)) {
-        let asset = images[(indexPath as NSIndexPath).item]
-        let cellSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
-        requestImage(asset: asset, cellSize: cellSize, completion: completion)
-    }
-
-    private func requestImage(asset: PHAsset, cellSize: CGSize, completion: @escaping ((UIImage?) -> Void)) {
         let options = PHImageRequestOptions()
         options.isNetworkAccessAllowed = true
+        options.isSynchronous = true
+        let asset = images[(indexPath as NSIndexPath).item]
+        let cellSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+        requestImage(asset: asset, cellSize: cellSize, options: options, completion: completion)
+    }
+
+    private func requestImage(asset: PHAsset, cellSize: CGSize, options: PHImageRequestOptions? = nil, completion: @escaping ((UIImage?) -> Void)) {
         imageManager?.requestImage(
             for: asset,
             targetSize: cellSize,
