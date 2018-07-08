@@ -1,6 +1,6 @@
 import UIKit
 
-class STKAlbumViewCell: UICollectionViewCell {
+class SCKAlbumViewCell: UICollectionViewCell {
     let imageView: UIImageView = UIImageView()
     var image: UIImage? {
         didSet {

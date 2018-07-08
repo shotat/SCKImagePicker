@@ -1,9 +1,9 @@
 import UIKit
 
-class STKAlbumView: UICollectionView {
+class SCKAlbumView: UICollectionView {
 }
 
-class STKAlbumViewLayout: UICollectionViewFlowLayout {
+class SCKAlbumViewLayout: UICollectionViewFlowLayout {
     var minimumHeight: CGFloat
     init(minimumHeight: CGFloat) {
         self.minimumHeight = minimumHeight

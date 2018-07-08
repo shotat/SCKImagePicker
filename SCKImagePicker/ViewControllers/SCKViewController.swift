@@ -1,7 +1,7 @@
 import Photos
 import UIKit
 
-private let stkAlbumViewCellId = "SKTAlbumViewCellId"
+private let sckAlbumViewCellId = "SCKAlbumViewCellId"
 
 enum CurtainState: Int {
     case closed
@@ -11,7 +11,7 @@ enum CurtainState: Int {
     // closed -> opening -> opened -> closing -> closed
 }
 
-class STKViewController: UIViewController {
+class SCKViewController: UIViewController {
     let topInset = CGFloat(30)
     lazy var imageCropViewHeight: CGFloat = {
         self.view.frame.width
@@ -52,7 +52,7 @@ class STKViewController: UIViewController {
         }
     }
 
-    lazy var imageCropView = STKImageCropView()
+    lazy var imageCropView = SCKImageCropView()
 
     private var draggingBeganAt: CGFloat?
 
@@ -62,7 +62,7 @@ class STKViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
-        collectionView.register(STKAlbumViewCell.self, forCellWithReuseIdentifier: stkAlbumViewCellId)
+        collectionView.register(SCKAlbumViewCell.self, forCellWithReuseIdentifier: sckAlbumViewCellId)
         return collectionView
     }()
 
@@ -131,7 +131,7 @@ class STKViewController: UIViewController {
     }
 }
 
-extension STKViewController: UICollectionViewDelegate {
+extension SCKViewController: UICollectionViewDelegate {
     func numberOfSections(in _: UICollectionView) -> Int {
         return 1
     }
@@ -141,9 +141,9 @@ extension STKViewController: UICollectionViewDelegate {
     }
 }
 
-extension STKViewController: UICollectionViewDataSource {
+extension SCKViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: stkAlbumViewCellId, for: indexPath) as! STKAlbumViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sckAlbumViewCellId, for: indexPath) as! SCKAlbumViewCell
         let cellWidth = view.frame.width / 3
         let cellSize = CGSize(width: cellWidth, height: cellWidth)
         let currentTag = cell.tag + 1
@@ -162,7 +162,7 @@ extension STKViewController: UICollectionViewDataSource {
     }
 }
 
-extension STKViewController: UIScrollViewDelegate {
+extension SCKViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
         if pan.numberOfTouches == 0 {
@@ -225,7 +225,7 @@ extension STKViewController: UIScrollViewDelegate {
     }
 }
 
-extension STKViewController: PHPhotoLibraryChangeObserver {
+extension SCKViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_: PHChange) {
         // TODO:
     }

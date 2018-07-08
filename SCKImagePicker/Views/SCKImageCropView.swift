@@ -1,7 +1,7 @@
 import SnapKit
 import UIKit
 
-class STKImageCropView: UIView {
+class SCKImageCropView: UIView {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .green
