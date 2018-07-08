@@ -21,10 +21,6 @@ class SCKViewController: UIViewController {
         self.imageCropViewHeight + self.imageCropView.frame.origin.y
     }()
 
-    lazy var curtainOpenedTop: CGFloat = {
-        self.topInset + self.curtainClosedBottom - imageCropViewHeight
-    }()
-
     var images: PHFetchResult<PHAsset>!
     var imageManager: PHCachingImageManager?
 
@@ -46,6 +42,8 @@ class SCKViewController: UIViewController {
                     }
                     self.view.layoutIfNeeded()
                 }
+            case .closing:
+                self.collectionView.contentOffset.y = 0
             default:
                 break
             }
@@ -58,7 +56,7 @@ class SCKViewController: UIViewController {
 
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.backgroundColor = .lightGray
+        collectionView.backgroundColor = UIColor(red: 0xFA, green: 0xFA, blue: 0xFA, alpha: 1.0)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
@@ -78,6 +76,7 @@ class SCKViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "SCKImagePicker"
         view.backgroundColor = .white
         view.addSubview(collectionView)
         view.addSubview(imageCropView)
@@ -105,6 +104,12 @@ class SCKViewController: UIViewController {
             collectionView.reloadData()
             collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: UICollectionViewScrollPosition())
         }
+
+        if let images = self.images, images.count > 0 {
+            print(images)
+            setCropViewImage(images[0])
+        }
+
         PHPhotoLibrary.shared().register(self)
     }
 
@@ -114,9 +119,10 @@ class SCKViewController: UIViewController {
             switch status {
             case .authorized:
                 self.imageManager = PHCachingImageManager()
-            // if let images = self.images, images.count > 0 {
-            // self.changeImage(images[0])
-            // }
+                if let images = self.images, images.count > 0 {
+                    print(images)
+                    self.setCropViewImage(images[0])
+                }
             // DispatchQueue.main.async {
             // self.delegate?.albumViewCameraRollAuthorized()
             // }
@@ -126,6 +132,32 @@ class SCKViewController: UIViewController {
             // })
             default:
                 break
+            }
+        }
+    }
+
+    private func setCropViewImage(_ asset: PHAsset) {
+        imageCropView.image = nil
+        // self.phAsset = asset
+        DispatchQueue.global().async {
+            let options = PHImageRequestOptions()
+            options.isNetworkAccessAllowed = true
+            self.imageManager?.requestImage(
+                for: asset,
+                targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
+                contentMode: .aspectFill,
+                options: options) { result, _ in
+                DispatchQueue.main.async {
+                    // self.imageCropView.imageSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+                    self.imageCropView.image = result
+
+                    // if let result = result,
+                    // !self.selectedAssets.contains(asset) {
+
+                    // self.selectedAssets.append(asset)
+                    // self.selectedImages.append(result)
+                    // }
+                }
             }
         }
     }
@@ -165,9 +197,7 @@ extension SCKViewController: UICollectionViewDataSource {
 extension SCKViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
-        if pan.numberOfTouches == 0 {
-            return
-        }
+        if pan.numberOfTouches == 0 { return }
         let location = pan.location(in: view)
 
         switch curtainState {

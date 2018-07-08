@@ -2,7 +2,13 @@ import SnapKit
 import UIKit
 
 class SCKImageCropView: UIView {
-    let imageView: UIImageView = {
+    var image: UIImage? {
+        didSet {
+            imageView.image = image
+        }
+    }
+
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .green
         return imageView
