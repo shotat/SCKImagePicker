@@ -24,7 +24,7 @@ class STKViewController: UIViewController {
     lazy var collectionViewLayout: UICollectionViewLayout = {
         let flowLayout = STKAlbumViewLayout(minimumHeight: self.view.frame.height - topInset)
         let margin: CGFloat = 0
-        let cellWidth = view.frame.width / 8
+        let cellWidth = view.frame.width / 4
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
@@ -121,6 +121,9 @@ extension STKViewController: UICollectionViewDataSource {
 extension STKViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
+        if pan.numberOfTouches == 0 {
+            return
+        }
         let location = pan.location(in: view)
         if isExpanding {
             if scrollView.contentOffset.y < -topInset {
@@ -133,7 +136,7 @@ extension STKViewController: UIScrollViewDelegate {
         } else {
             if location.y < imageCropView.frame.height {
                 let offset = imageCropView.frame.height - location.y
-                // collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
+                collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
                 imageCropView.snp.updateConstraints {
                     $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
                 }
@@ -151,7 +154,7 @@ extension STKViewController: UIScrollViewDelegate {
         let location = pan.location(in: view)
         if isExpanding {
             isExpanding = false
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.2) {
                 self.collectionView.contentInset = UIEdgeInsets(top: self.view.frame.width, left: 0, bottom: 0, right: 0)
                 self.imageCropView.snp.updateConstraints {
                     $0.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -161,7 +164,7 @@ extension STKViewController: UIScrollViewDelegate {
         } else {
             if location.y < view.frame.width {
                 isExpanding = true
-                UIView.animate(withDuration: 0.5) {
+                UIView.animate(withDuration: 0.2) {
                     self.collectionView.contentInset = UIEdgeInsets(top: self.topInset, left: 0, bottom: 0, right: 0)
                     self.imageCropView.snp.updateConstraints {
                         $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
