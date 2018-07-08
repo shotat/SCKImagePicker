@@ -39,7 +39,7 @@
 		656B5EDF20F10D2E00B84004 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		656B5EEB20F1309300B84004 /* STKAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKAlbumView.swift; sourceTree = "<group>"; };
 		656B5EED20F130B400B84004 /* STKAlbumViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STKAlbumViewCell.swift; sourceTree = "<group>"; };
-		65D8520D20F107E100391BCA /* STKImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STKImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65D8520D20F107E100391BCA /* SCKImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCKImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D8521020F107E100391BCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D8521220F107E100391BCA /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		65D8521720F107E200391BCA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				656B5EDF20F10D2E00B84004 /* SnapKit.framework */,
-				65D8520F20F107E100391BCA /* STKImagePicker */,
+				65D8520F20F107E100391BCA /* SCKImagePicker */,
 				65D8520E20F107E100391BCA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,12 +89,12 @@
 		65D8520E20F107E100391BCA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65D8520D20F107E100391BCA /* STKImagePicker.app */,
+				65D8520D20F107E100391BCA /* SCKImagePicker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		65D8520F20F107E100391BCA /* STKImagePicker */ = {
+		65D8520F20F107E100391BCA /* SCKImagePicker */ = {
 			isa = PBXGroup;
 			children = (
 				656B5EDB20F10B5200B84004 /* ViewControllers */,
@@ -105,15 +105,15 @@
 				65D8521920F107E200391BCA /* LaunchScreen.storyboard */,
 				65D8521C20F107E200391BCA /* Info.plist */,
 			);
-			path = STKImagePicker;
+			path = SCKImagePicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65D8520C20F107E100391BCA /* STKImagePicker */ = {
+		65D8520C20F107E100391BCA /* SCKImagePicker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65D8521F20F107E200391BCA /* Build configuration list for PBXNativeTarget "STKImagePicker" */;
+			buildConfigurationList = 65D8521F20F107E200391BCA /* Build configuration list for PBXNativeTarget "SCKImagePicker" */;
 			buildPhases = (
 				65D8520920F107E100391BCA /* Sources */,
 				65D8520A20F107E100391BCA /* Frameworks */,
@@ -124,9 +124,9 @@
 			);
 			dependencies = (
 			);
-			name = STKImagePicker;
-			productName = STKImagePicker;
-			productReference = 65D8520D20F107E100391BCA /* STKImagePicker.app */;
+			name = SCKImagePicker;
+			productName = SCKImagePicker;
+			productReference = 65D8520D20F107E100391BCA /* SCKImagePicker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -144,7 +144,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 65D8520820F107E100391BCA /* Build configuration list for PBXProject "STKImagePicker" */;
+			buildConfigurationList = 65D8520820F107E100391BCA /* Build configuration list for PBXProject "SCKImagePicker" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -157,7 +157,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65D8520C20F107E100391BCA /* STKImagePicker */,
+				65D8520C20F107E100391BCA /* SCKImagePicker */,
 			);
 		};
 /* End PBXProject section */
@@ -325,12 +325,12 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = STKImagePicker/Info.plist;
+				INFOPLIST_FILE = SCKImagePicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = shotat.STKImagePicker;
+				PRODUCT_BUNDLE_IDENTIFIER = shotat.SCKImagePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -346,12 +346,12 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = STKImagePicker/Info.plist;
+				INFOPLIST_FILE = SCKImagePicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = shotat.STKImagePicker;
+				PRODUCT_BUNDLE_IDENTIFIER = shotat.SCKImagePicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -361,7 +361,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		65D8520820F107E100391BCA /* Build configuration list for PBXProject "STKImagePicker" */ = {
+		65D8520820F107E100391BCA /* Build configuration list for PBXProject "SCKImagePicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65D8521D20F107E200391BCA /* Debug */,
@@ -370,7 +370,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65D8521F20F107E200391BCA /* Build configuration list for PBXNativeTarget "STKImagePicker" */ = {
+		65D8521F20F107E200391BCA /* Build configuration list for PBXNativeTarget "SCKImagePicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65D8522020F107E200391BCA /* Debug */,

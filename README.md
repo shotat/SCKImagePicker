@@ -1,1 +1,1 @@
-# STKImagePicker
+# SCKImagePicker
