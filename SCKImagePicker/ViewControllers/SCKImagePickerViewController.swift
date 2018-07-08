@@ -1,6 +1,6 @@
 import UIKit
 
-class SCKPickerViewController: UIViewController {
+class SCKImagePickerViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 

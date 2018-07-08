@@ -63,7 +63,12 @@ class SCKLibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter = SCKPresenter()
-        navigationItem.title = "SCKImagePicker"
+        let titleView = SCKLibraryTitleView(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleView.setTitle(title: "SCKImagePicker")
+        titleView.button.addTarget(self, action: #selector(navBarTapped), for: .touchUpInside)
+        navigationItem.titleView = titleView
+        navigationController?.navigationBar.isTranslucent = false
+
         setNeedsStatusBarAppearanceUpdate()
 
         view.backgroundColor = .white
@@ -107,6 +112,20 @@ class SCKLibraryViewController: UIViewController {
         // self.selectedAssets.append(asset)
         // self.selectedImages.append(result)
         // }
+    }
+
+    @objc func navBarTapped() {
+        // let vc = SCKAlbumsViewController(albumsManager: albumsManager)
+        let vc = SampleViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        // vc.didSelectAlbum = { [weak self] album in
+        //     self?.libraryVC?.setAlbum(album)
+        //     self?.libraryVC?.title = album.title
+        //     self?.libraryVC?.refreshMediaRequest()
+        //     self?.setTitleViewWithTitle(aTitle: album.title)
+        //     self?.dismiss(animated: true, completion: nil)
+        // }
+        present(navVC, animated: true, completion: nil)
     }
 }
 
