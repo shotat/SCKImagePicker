@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */; };
+		6544B45220F217DC00FC7243 /* SCKAlbumsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6544B45120F217DC00FC7243 /* SCKAlbumsManager.swift */; };
 		656B5EDA20F10B4D00B84004 /* SCKViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5ED920F10B4D00B84004 /* SCKViewController.swift */; };
 		656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */; };
 		656B5EE020F10D2E00B84004 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKPresenter.swift; sourceTree = "<group>"; };
+		6544B45120F217DC00FC7243 /* SCKAlbumsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumsManager.swift; sourceTree = "<group>"; };
 		656B5ED920F10B4D00B84004 /* SCKViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKViewController.swift; sourceTree = "<group>"; };
 		656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKImageCropView.swift; sourceTree = "<group>"; };
 		656B5EDF20F10D2E00B84004 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
@@ -65,17 +67,9 @@
 			isa = PBXGroup;
 			children = (
 				6544B44E20F1FF4200FC7243 /* SCKPresenter.swift */,
+				6544B45120F217DC00FC7243 /* SCKAlbumsManager.swift */,
 			);
 			path = Presenters;
-			sourceTree = "<group>";
-		};
-		6544B45020F20F6F00FC7243 /* SCKLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				656B5EEB20F1309300B84004 /* SCKLibrarySelectionsView.swift */,
-				656B5EED20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift */,
-			);
-			path = SCKLibrary;
 			sourceTree = "<group>";
 		};
 		656B5EDB20F10B5200B84004 /* ViewControllers */ = {
@@ -89,7 +83,8 @@
 		656B5EDC20F10B5E00B84004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6544B45020F20F6F00FC7243 /* SCKLibrary */,
+				656B5EEB20F1309300B84004 /* SCKLibrarySelectionsView.swift */,
+				656B5EED20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift */,
 				656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */,
 			);
 			path = Views;
@@ -199,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */,
+				6544B45220F217DC00FC7243 /* SCKAlbumsManager.swift in Sources */,
 				6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */,
 				656B5EDA20F10B4D00B84004 /* SCKViewController.swift in Sources */,
 				656B5EEC20F1309300B84004 /* SCKLibrarySelectionsView.swift in Sources */,
