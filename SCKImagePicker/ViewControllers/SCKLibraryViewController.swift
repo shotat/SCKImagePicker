@@ -10,8 +10,9 @@ enum CurtainState: Int {
     case opened // down to up
 }
 
-class SCKViewController: UIViewController {
-    var presenter: SCKPresenter!
+class SCKLibraryViewController: UIViewController {
+    var presenter: SCKLibraryPresenter!
+    let albumsManager = SCKAlbumsManager()
 
     let topInset = CGFloat(30)
     lazy var imageCropViewHeight: CGFloat = {
@@ -26,7 +27,10 @@ class SCKViewController: UIViewController {
         didSet {
             print(curtainState)
             switch curtainState {
+            case .opening:
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
             case .opened:
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
                 UIView.animate(withDuration: 0.2) {
                     self.imageCropView.snp.updateConstraints {
                         $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.imageCropViewHeight - self.topInset))
@@ -34,6 +38,7 @@ class SCKViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 }
             case .closed:
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
                 UIView.animate(withDuration: 0.2) {
                     self.imageCropView.snp.updateConstraints {
                         $0.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -41,9 +46,8 @@ class SCKViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 }
             case .closing:
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
                 self.collectionView.contentOffset.y = 0
-            default:
-                break
             }
         }
     }
@@ -53,10 +57,21 @@ class SCKViewController: UIViewController {
 
     let collectionView: UICollectionView = SCKLibrarySelectionsView()
 
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = SCKPresenter()
-        navigationItem.title = "SCKImagePicker"
+        presenter = SCKLibraryPresenter()
+        let titleView = SCKLibraryTitleView(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleView.setTitle(title: "SCKImagePicker")
+        titleView.button.addTarget(self, action: #selector(navBarTapped), for: .touchUpInside)
+        navigationItem.titleView = titleView
+        navigationController?.navigationBar.isTranslucent = false
+
+        setNeedsStatusBarAppearanceUpdate()
+
         view.backgroundColor = .white
         view.addSubview(collectionView)
         view.addSubview(imageCropView)
@@ -99,16 +114,29 @@ class SCKViewController: UIViewController {
         // self.selectedImages.append(result)
         // }
     }
+
+    @objc func navBarTapped() {
+        let vc = SCKAlbumsViewController(albumsManager: albumsManager)
+        let navVC = UINavigationController(rootViewController: vc)
+        vc.didSelectAlbum = { [weak self] _ in
+            // self?.libraryVC?.setAlbum(album)
+            // self?.libraryVC?.title = album.title
+            // self?.libraryVC?.refreshMediaRequest()
+            // self?.setTitleViewWithTitle(aTitle: album.title)
+            self?.dismiss(animated: true, completion: nil)
+        }
+        present(navVC, animated: true, completion: nil)
+    }
 }
 
-extension SCKViewController: UICollectionViewDelegate {
+extension SCKLibraryViewController: UICollectionViewDelegate {
     func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         changeCropViewImage(indexPath)
         curtainState = .closed
     }
 }
 
-extension SCKViewController: UICollectionViewDataSource {
+extension SCKLibraryViewController: UICollectionViewDataSource {
     func numberOfSections(in _: UICollectionView) -> Int {
         return presenter.numberOfSections()
     }
@@ -133,7 +161,7 @@ extension SCKViewController: UICollectionViewDataSource {
     }
 }
 
-extension SCKViewController: UIScrollViewDelegate {
+extension SCKLibraryViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
         if pan.numberOfTouches == 0 { return }
@@ -164,6 +192,7 @@ extension SCKViewController: UIScrollViewDelegate {
             imageCropView.snp.updateConstraints {
                 $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
             }
+
             if scrollView.contentOffset.y <= 0 {
                 curtainState = .closing
             }

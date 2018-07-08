@@ -5,6 +5,7 @@ class SCKLibrarySelectionsView: UICollectionView {
         super.init(frame: .zero, collectionViewLayout: SCKLibrarySelectionsLayout())
         backgroundColor = UIColor(red: 0xFA, green: 0xFA, blue: 0xFA, alpha: 1.0)
         alwaysBounceVertical = true
+        allowsMultipleSelection = true
     }
 
     required init?(coder _: NSCoder) {
