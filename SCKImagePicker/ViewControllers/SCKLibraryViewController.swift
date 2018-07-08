@@ -14,7 +14,7 @@ class SCKLibraryViewController: UIViewController {
     var presenter: SCKLibraryPresenter!
     let albumsManager = SCKAlbumsManager()
 
-    let topInset = CGFloat(30)
+    let topInset = CGFloat(44)
     lazy var imageCropViewHeight: CGFloat = {
         self.view.frame.width
     }()
