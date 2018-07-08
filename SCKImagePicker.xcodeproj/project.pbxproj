@@ -12,8 +12,8 @@
 		656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */; };
 		656B5EE020F10D2E00B84004 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; };
 		656B5EE120F10D2E00B84004 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 656B5EDF20F10D2E00B84004 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		656B5EEC20F1309300B84004 /* SCKAlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EEB20F1309300B84004 /* SCKAlbumView.swift */; };
-		656B5EEE20F130B400B84004 /* SCKAlbumViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EED20F130B400B84004 /* SCKAlbumViewCell.swift */; };
+		656B5EEC20F1309300B84004 /* SCKLibrarySelectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EEB20F1309300B84004 /* SCKLibrarySelectionsView.swift */; };
+		656B5EEE20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656B5EED20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift */; };
 		65D8521120F107E100391BCA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8521020F107E100391BCA /* AppDelegate.swift */; };
 		65D8521320F107E100391BCA /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8521220F107E100391BCA /* SampleViewController.swift */; };
 		65D8521820F107E200391BCA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D8521720F107E200391BCA /* Assets.xcassets */; };
@@ -39,8 +39,8 @@
 		656B5ED920F10B4D00B84004 /* SCKViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKViewController.swift; sourceTree = "<group>"; };
 		656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKImageCropView.swift; sourceTree = "<group>"; };
 		656B5EDF20F10D2E00B84004 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
-		656B5EEB20F1309300B84004 /* SCKAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumView.swift; sourceTree = "<group>"; };
-		656B5EED20F130B400B84004 /* SCKAlbumViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKAlbumViewCell.swift; sourceTree = "<group>"; };
+		656B5EEB20F1309300B84004 /* SCKLibrarySelectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKLibrarySelectionsView.swift; sourceTree = "<group>"; };
+		656B5EED20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCKLibrarySelectionsViewCell.swift; sourceTree = "<group>"; };
 		65D8520D20F107E100391BCA /* SCKImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCKImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D8521020F107E100391BCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65D8521220F107E100391BCA /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +69,15 @@
 			path = Presenters;
 			sourceTree = "<group>";
 		};
+		6544B45020F20F6F00FC7243 /* SCKLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				656B5EEB20F1309300B84004 /* SCKLibrarySelectionsView.swift */,
+				656B5EED20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift */,
+			);
+			path = SCKLibrary;
+			sourceTree = "<group>";
+		};
 		656B5EDB20F10B5200B84004 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,9 +89,8 @@
 		656B5EDC20F10B5E00B84004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6544B45020F20F6F00FC7243 /* SCKLibrary */,
 				656B5EDD20F10C7900B84004 /* SCKImageCropView.swift */,
-				656B5EEB20F1309300B84004 /* SCKAlbumView.swift */,
-				656B5EED20F130B400B84004 /* SCKAlbumViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -193,10 +201,10 @@
 				656B5EDE20F10C7900B84004 /* SCKImageCropView.swift in Sources */,
 				6544B44F20F1FF4200FC7243 /* SCKPresenter.swift in Sources */,
 				656B5EDA20F10B4D00B84004 /* SCKViewController.swift in Sources */,
-				656B5EEC20F1309300B84004 /* SCKAlbumView.swift in Sources */,
+				656B5EEC20F1309300B84004 /* SCKLibrarySelectionsView.swift in Sources */,
 				65D8521320F107E100391BCA /* SampleViewController.swift in Sources */,
 				65D8521120F107E100391BCA /* AppDelegate.swift in Sources */,
-				656B5EEE20F130B400B84004 /* SCKAlbumViewCell.swift in Sources */,
+				656B5EEE20F130B400B84004 /* SCKLibrarySelectionsViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

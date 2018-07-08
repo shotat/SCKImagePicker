@@ -1,13 +1,13 @@
 import UIKit
 
-private let sckAlbumViewCellId = "SCKAlbumViewCellId"
+private let sckLibraryViewCellId = "SCKLibraryViewCellId"
 
 enum CurtainState: Int {
+    // closed -> opening -> opened -> closing -> closed
     case closed
     case closing // up to down
     case opening // down to up
     case opened // down to up
-    // closed -> opening -> opened -> closing -> closed
 }
 
 class SCKViewController: UIViewController {
@@ -49,28 +49,9 @@ class SCKViewController: UIViewController {
     }
 
     lazy var imageCropView = SCKImageCropView()
-
     private var draggingBeganAt: CGFloat?
 
-    lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.backgroundColor = UIColor(red: 0xFA, green: 0xFA, blue: 0xFA, alpha: 1.0)
-        collectionView.alwaysBounceVertical = true
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(SCKAlbumViewCell.self, forCellWithReuseIdentifier: sckAlbumViewCellId)
-        return collectionView
-    }()
-
-    lazy var collectionViewLayout: UICollectionViewLayout = {
-        let flowLayout = UICollectionViewFlowLayout()
-        let margin: CGFloat = 0
-        let cellWidth = view.frame.width / 4
-        flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
-        flowLayout.minimumInteritemSpacing = margin
-        flowLayout.minimumLineSpacing = margin
-        return flowLayout
-    }()
+    let collectionView: UICollectionView = SCKLibrarySelectionsView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +60,10 @@ class SCKViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(collectionView)
         view.addSubview(imageCropView)
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(SCKLibrarySelectionsViewCell.self, forCellWithReuseIdentifier: sckLibraryViewCellId)
 
         imageCropView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide)
@@ -133,7 +118,7 @@ extension SCKViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sckAlbumViewCellId, for: indexPath) as! SCKAlbumViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: sckLibraryViewCellId, for: indexPath) as! SCKLibrarySelectionsViewCell
         // let cellWidth = view.frame.width / 3
         // let cellSize = CGSize(width: cellWidth, height: cellWidth)
         let currentTag = cell.tag + 1
