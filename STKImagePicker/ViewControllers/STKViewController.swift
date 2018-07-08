@@ -12,18 +12,32 @@ enum CurtainState: Int {
 }
 
 class STKViewController: UIViewController {
-    let topInset = CGFloat(40)
+    let topInset = CGFloat(30)
+    lazy var imageCropViewHeight: CGFloat = {
+        self.view.frame.width
+    }()
+
+    lazy var curtainClosedBottom: CGFloat = {
+        self.imageCropViewHeight + self.imageCropView.frame.origin.y
+    }()
+
+    lazy var curtainOpenedTop: CGFloat = {
+        self.topInset + self.curtainClosedBottom - imageCropViewHeight
+    }()
+
     var images: PHFetchResult<PHAsset>!
     var imageManager: PHCachingImageManager?
+
     var curtainState: CurtainState = .closed {
         didSet {
             print(curtainState)
             switch curtainState {
             case .opened:
-                UIView.animate(withDuration: 0.2) { self.imageCropView.snp.updateConstraints {
-                    $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
-                }
-                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.2) {
+                    self.imageCropView.snp.updateConstraints {
+                        $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.imageCropViewHeight - self.topInset))
+                    }
+                    self.view.layoutIfNeeded()
                 }
             case .closed:
                 UIView.animate(withDuration: 0.2) {
@@ -40,7 +54,7 @@ class STKViewController: UIViewController {
 
     lazy var imageCropView = STKImageCropView()
 
-    private var draggingStartY: CGFloat?
+    private var draggingBeganAt: CGFloat?
 
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
@@ -55,7 +69,7 @@ class STKViewController: UIViewController {
     lazy var collectionViewLayout: UICollectionViewLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         let margin: CGFloat = 0
-        let cellWidth = view.frame.width / 8
+        let cellWidth = view.frame.width / 3
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
@@ -139,9 +153,7 @@ extension STKViewController: UICollectionViewDataSource {
         imageManager?.requestImage(for: asset,
                                    targetSize: cellSize,
                                    contentMode: .aspectFill,
-                                   options: nil) {
-            result, _ in
-
+                                   options: nil) { result, _ in
             if cell.tag == currentTag {
                 cell.image = result
             }
@@ -163,44 +175,45 @@ extension STKViewController: UIScrollViewDelegate {
             imageCropView.snp.updateConstraints {
                 $0.top.equalTo(self.view.safeAreaLayoutGuide)
             }
-            if location.y < imageCropView.frame.height {
+            // change state
+            if location.y < curtainClosedBottom {
                 curtainState = .opening
             }
         case .opening:
-            let offset = imageCropView.frame.height - location.y
+            guard let draggingBeganAt = draggingBeganAt else { return }
+            let offset = curtainClosedBottom - location.y
             imageCropView.snp.updateConstraints {
                 $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
             }
-            if let startY = draggingStartY {
-                collectionView.contentOffset.y = startY
+            collectionView.contentOffset.y = draggingBeganAt
+            // change state
+            if location.y > curtainClosedBottom {
+                curtainState = .closed
             }
         case .opened:
+            let offset = imageCropViewHeight - topInset
             imageCropView.snp.updateConstraints {
-                $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
+                $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
             }
             if scrollView.contentOffset.y <= 0 {
                 curtainState = .closing
             }
         case .closing:
-            if let startY = draggingStartY {
-                collectionView.contentOffset.y = startY
-                let offset = imageCropView.frame.height - location.y + startY
-                imageCropView.snp.updateConstraints {
-                    $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
-                }
+            guard let draggingBeganAt = draggingBeganAt else { return }
+            let offset = curtainClosedBottom - location.y + draggingBeganAt
+            imageCropView.snp.updateConstraints {
+                $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
             }
+            collectionView.contentOffset.y = 0
         }
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
-        let location = pan.location(in: scrollView)
-        draggingStartY = location.y
+        draggingBeganAt = pan.location(in: scrollView).y
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate _: Bool) {
-        let pan = scrollView.panGestureRecognizer
-        // let location = pan.location(in: view)
         switch curtainState {
         case .opening:
             curtainState = .opened
