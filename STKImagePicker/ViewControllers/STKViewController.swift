@@ -4,8 +4,10 @@ import UIKit
 private let stkAlbumViewCellId = "SKTAlbumViewCellId"
 
 class STKViewController: UIViewController {
+    let topInset = CGFloat(40)
     var images: PHFetchResult<PHAsset>!
     var imageManager: PHCachingImageManager?
+    var isExpanding: Bool = false
     lazy var imageCropView = STKImageCropView()
 
     lazy var collectionView: UICollectionView = {
@@ -13,15 +15,16 @@ class STKViewController: UIViewController {
         collectionView.backgroundColor = .lightGray
         collectionView.delegate = self
         collectionView.dataSource = self
-        // collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
+        collectionView.alwaysBounceVertical = true
+        collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
         collectionView.register(STKAlbumViewCell.self, forCellWithReuseIdentifier: stkAlbumViewCellId)
         return collectionView
     }()
 
     lazy var collectionViewLayout: UICollectionViewLayout = {
-        let flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = STKAlbumViewLayout(minimumHeight: self.view.frame.height - topInset)
         let margin: CGFloat = 0
-        let cellWidth = view.frame.width / 2
+        let cellWidth = view.frame.width / 8
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
@@ -39,7 +42,7 @@ class STKViewController: UIViewController {
         }
 
         imageCropView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(imageCropView.snp.width)
         }
@@ -119,27 +122,53 @@ extension STKViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
         let location = pan.location(in: view)
-        if location.y < imageCropView.frame.height {
-            let offset = imageCropView.frame.height - location.y
-            collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
-            imageCropView.snp.updateConstraints {
-                $0.top.equalToSuperview().offset(-offset)
+        if isExpanding {
+            if scrollView.contentOffset.y < -topInset {
+                let offset = view.frame.width + collectionView.contentOffset.y
+                // collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
+                imageCropView.snp.updateConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
+                }
             }
         } else {
-            collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
-            imageCropView.snp.updateConstraints {
-                $0.top.equalToSuperview()
+            if location.y < imageCropView.frame.height {
+                let offset = imageCropView.frame.height - location.y
+                // collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
+                imageCropView.snp.updateConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
+                }
+            } else {
+                // collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
+                imageCropView.snp.updateConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                }
             }
         }
     }
 
-    func scrollViewDidEndDragging(_: UIScrollView, willDecelerate _: Bool) {
-        UIView.animate(withDuration: 0.2) {
-            // self.collectionView.contentInset = UIEdgeInsets(top: self.view.frame.width, left: 0, bottom: 0, right: 0)
-            self.imageCropView.snp.updateConstraints {
-                $0.top.equalToSuperview()
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate _: Bool) {
+        let pan = scrollView.panGestureRecognizer
+        let location = pan.location(in: view)
+        if isExpanding {
+            isExpanding = false
+            UIView.animate(withDuration: 0.5) {
+                self.collectionView.contentInset = UIEdgeInsets(top: self.view.frame.width, left: 0, bottom: 0, right: 0)
+                self.imageCropView.snp.updateConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                }
+                self.view.layoutIfNeeded()
             }
-            self.view.layoutIfNeeded()
+        } else {
+            if location.y < view.frame.width {
+                isExpanding = true
+                UIView.animate(withDuration: 0.5) {
+                    self.collectionView.contentInset = UIEdgeInsets(top: self.topInset, left: 0, bottom: 0, right: 0)
+                    self.imageCropView.snp.updateConstraints {
+                        $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
+                    }
+                    self.view.layoutIfNeeded()
+                }
+            }
         }
     }
 }
