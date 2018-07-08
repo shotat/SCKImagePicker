@@ -3,12 +3,44 @@ import UIKit
 
 private let stkAlbumViewCellId = "SKTAlbumViewCellId"
 
+enum CurtainState: Int {
+    case closed
+    case closing // up to down
+    case opening // down to up
+    case opened // down to up
+    // closed -> opening -> opened -> closing -> closed
+}
+
 class STKViewController: UIViewController {
     let topInset = CGFloat(40)
     var images: PHFetchResult<PHAsset>!
     var imageManager: PHCachingImageManager?
-    var isExpanding: Bool = false
+    var curtainState: CurtainState = .closed {
+        didSet {
+            print(curtainState)
+            switch curtainState {
+            case .opened:
+                UIView.animate(withDuration: 0.2) { self.imageCropView.snp.updateConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
+                }
+                self.view.layoutIfNeeded()
+                }
+            case .closed:
+                UIView.animate(withDuration: 0.2) {
+                    self.imageCropView.snp.updateConstraints {
+                        $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                    }
+                    self.view.layoutIfNeeded()
+                }
+            default:
+                break
+            }
+        }
+    }
+
     lazy var imageCropView = STKImageCropView()
+
+    private var draggingStartY: CGFloat?
 
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
@@ -16,15 +48,14 @@ class STKViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
-        collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
         collectionView.register(STKAlbumViewCell.self, forCellWithReuseIdentifier: stkAlbumViewCellId)
         return collectionView
     }()
 
     lazy var collectionViewLayout: UICollectionViewLayout = {
-        let flowLayout = STKAlbumViewLayout(minimumHeight: self.view.frame.height - topInset)
+        let flowLayout = UICollectionViewFlowLayout()
         let margin: CGFloat = 0
-        let cellWidth = view.frame.width / 4
+        let cellWidth = view.frame.width / 8
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.minimumLineSpacing = margin
@@ -37,14 +68,15 @@ class STKViewController: UIViewController {
         view.addSubview(collectionView)
         view.addSubview(imageCropView)
 
-        collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-
         imageCropView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(imageCropView.snp.width)
+        }
+
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(imageCropView.snp.bottom)
+            $0.left.right.bottom.equalToSuperview()
         }
 
         checkPhotoAuth()
@@ -125,53 +157,57 @@ extension STKViewController: UIScrollViewDelegate {
             return
         }
         let location = pan.location(in: view)
-        if isExpanding {
-            if scrollView.contentOffset.y < -topInset {
-                let offset = view.frame.width + collectionView.contentOffset.y
-                // collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
-                imageCropView.snp.updateConstraints {
-                    $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
-                }
+
+        switch curtainState {
+        case .closed:
+            imageCropView.snp.updateConstraints {
+                $0.top.equalTo(self.view.safeAreaLayoutGuide)
             }
-        } else {
             if location.y < imageCropView.frame.height {
-                let offset = imageCropView.frame.height - location.y
-                collectionView.contentInset = UIEdgeInsets(top: location.y, left: 0, bottom: 0, right: 0)
+                curtainState = .opening
+            }
+        case .opening:
+            let offset = imageCropView.frame.height - location.y
+            imageCropView.snp.updateConstraints {
+                $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
+            }
+            if let startY = draggingStartY {
+                collectionView.contentOffset.y = startY
+            }
+        case .opened:
+            imageCropView.snp.updateConstraints {
+                $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
+            }
+            if scrollView.contentOffset.y <= 0 {
+                curtainState = .closing
+            }
+        case .closing:
+            if let startY = draggingStartY {
+                collectionView.contentOffset.y = startY
+                let offset = imageCropView.frame.height - location.y + startY
                 imageCropView.snp.updateConstraints {
                     $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
-                }
-            } else {
-                // collectionView.contentInset = UIEdgeInsets(top: view.frame.width, left: 0, bottom: 0, right: 0)
-                imageCropView.snp.updateConstraints {
-                    $0.top.equalTo(self.view.safeAreaLayoutGuide)
                 }
             }
         }
     }
 
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let pan = scrollView.panGestureRecognizer
+        let location = pan.location(in: scrollView)
+        draggingStartY = location.y
+    }
+
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate _: Bool) {
         let pan = scrollView.panGestureRecognizer
-        let location = pan.location(in: view)
-        if isExpanding {
-            isExpanding = false
-            UIView.animate(withDuration: 0.2) {
-                self.collectionView.contentInset = UIEdgeInsets(top: self.view.frame.width, left: 0, bottom: 0, right: 0)
-                self.imageCropView.snp.updateConstraints {
-                    $0.top.equalTo(self.view.safeAreaLayoutGuide)
-                }
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            if location.y < view.frame.width {
-                isExpanding = true
-                UIView.animate(withDuration: 0.2) {
-                    self.collectionView.contentInset = UIEdgeInsets(top: self.topInset, left: 0, bottom: 0, right: 0)
-                    self.imageCropView.snp.updateConstraints {
-                        $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.view.frame.width - self.topInset))
-                    }
-                    self.view.layoutIfNeeded()
-                }
-            }
+        // let location = pan.location(in: view)
+        switch curtainState {
+        case .opening:
+            curtainState = .opened
+        case .closing:
+            curtainState = .closed
+        default:
+            break
         }
     }
 }
