@@ -26,34 +26,35 @@ class SCKLibraryViewController: UIViewController {
     var curtainState: CurtainState = .closed {
         didSet {
             print(curtainState)
-            switch curtainState {
-            case .opening:
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
-            case .opened:
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
-                UIView.animate(withDuration: 0.2) {
-                    self.imageCropView.snp.updateConstraints {
-                        $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.imageCropViewHeight - self.topInset))
+                switch self.curtainState {
+                case .opening:
+                    break
+                // self.navigationController?.setNavigationBarHidden(true, animated: true)
+                case .opened:
+                    // self.navigationController?.setNavigationBarHidden(true, animated: true)
+                    UIView.animate(withDuration: 0.2) {
+                        self.imageCropView.snp.updateConstraints {
+                            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.imageCropViewHeight - self.topInset))
+                        }
+                        self.view.layoutIfNeeded()
                     }
-                    self.view.layoutIfNeeded()
-                }
-            case .closed:
-                self.navigationController?.setNavigationBarHidden(false, animated: true)
-                UIView.animate(withDuration: 0.2) {
-                    self.imageCropView.snp.updateConstraints {
-                        $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                case .closed:
+                    // self.navigationController?.setNavigationBarHidden(false, animated: true)
+                    UIView.animate(withDuration: 0.2) {
+                        self.imageCropView.snp.updateConstraints {
+                            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                        }
+                        self.view.layoutIfNeeded()
                     }
-                    self.view.layoutIfNeeded()
+                case .closing:
+                    // self.navigationController?.setNavigationBarHidden(false, animated: true)
+                    self.collectionView.contentOffset.y = 0
                 }
-            case .closing:
-                self.navigationController?.setNavigationBarHidden(false, animated: true)
-                self.collectionView.contentOffset.y = 0
-            }
         }
     }
 
     lazy var imageCropView = SCKImageCropView()
-    private var draggingBeganAt: CGFloat?
+    private var prevStateChangedAt: CGFloat?
 
     let collectionView: UICollectionView = SCKLibrarySelectionsView()
 
@@ -173,18 +174,26 @@ extension SCKLibraryViewController: UIScrollViewDelegate {
                 $0.top.equalTo(self.view.safeAreaLayoutGuide)
             }
             // change state
-            if location.y < curtainClosedBottom {
+            let offset = curtainClosedBottom - location.y
+            if let draggingBeganAt = prevStateChangedAt {
+                scrollView.contentOffset.y = draggingBeganAt
+                prevStateChangedAt = nil
+            }
+            if offset > 0 {
+                prevStateChangedAt = pan.location(in: scrollView).y
                 curtainState = .opening
             }
         case .opening:
-            guard let draggingBeganAt = draggingBeganAt else { return }
+            guard let draggingBeganAt = prevStateChangedAt else { return }
             let offset = curtainClosedBottom - location.y
             imageCropView.snp.updateConstraints {
                 $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
             }
             collectionView.contentOffset.y = draggingBeganAt
             // change state
-            if location.y > curtainClosedBottom {
+            if offset < 0 {
+                // self.draggingBeganAt = pan.location(in: scrollView).y
+                prevStateChangedAt = scrollView.contentOffset.y
                 curtainState = .closed
             }
         case .opened:
@@ -197,7 +206,7 @@ extension SCKLibraryViewController: UIScrollViewDelegate {
                 curtainState = .closing
             }
         case .closing:
-            guard let draggingBeganAt = draggingBeganAt else { return }
+            guard let draggingBeganAt = prevStateChangedAt else { return }
             let offset = curtainClosedBottom - location.y + draggingBeganAt
             imageCropView.snp.updateConstraints {
                 $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-offset)
@@ -208,10 +217,13 @@ extension SCKLibraryViewController: UIScrollViewDelegate {
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
-        draggingBeganAt = pan.location(in: scrollView).y
+        if curtainState == .opened {
+            prevStateChangedAt = pan.location(in: scrollView).y
+        }
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate _: Bool) {
+        prevStateChangedAt = nil
         switch curtainState {
         case .opening:
             curtainState = .opened
