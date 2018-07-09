@@ -26,30 +26,30 @@ class SCKLibraryViewController: UIViewController {
     var curtainState: CurtainState = .closed {
         didSet {
             print(curtainState)
-                switch self.curtainState {
-                case .opening:
-                    break
+            switch self.curtainState {
+            case .opening:
                 // self.navigationController?.setNavigationBarHidden(true, animated: true)
-                case .opened:
-                    // self.navigationController?.setNavigationBarHidden(true, animated: true)
-                    UIView.animate(withDuration: 0.2) {
-                        self.imageCropView.snp.updateConstraints {
-                            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.imageCropViewHeight - self.topInset))
-                        }
-                        self.view.layoutIfNeeded()
+                break
+            case .opened:
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
+                UIView.animate(withDuration: 0.2) {
+                    self.imageCropView.snp.updateConstraints {
+                        $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-(self.imageCropViewHeight - self.topInset))
                     }
-                case .closed:
-                    // self.navigationController?.setNavigationBarHidden(false, animated: true)
-                    UIView.animate(withDuration: 0.2) {
-                        self.imageCropView.snp.updateConstraints {
-                            $0.top.equalTo(self.view.safeAreaLayoutGuide)
-                        }
-                        self.view.layoutIfNeeded()
-                    }
-                case .closing:
-                    // self.navigationController?.setNavigationBarHidden(false, animated: true)
-                    self.collectionView.contentOffset.y = 0
+                    self.view.layoutIfNeeded()
                 }
+            case .closed:
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+                UIView.animate(withDuration: 0.2) {
+                    self.imageCropView.snp.updateConstraints {
+                        $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                    }
+                    self.view.layoutIfNeeded()
+                }
+            case .closing:
+                // self.navigationController?.setNavigationBarHidden(false, animated: true)
+                self.collectionView.contentOffset.y = 0
+            }
         }
     }
 
